@@ -13,7 +13,8 @@ export default class AuthController {
             password
         })
 
-        const token = await auth.use('api').attempt(nick_name, email, password)
+        const token = await auth.use('api').attempt(nick_name, email)
+
         response.status(201)
         return {
             user,
