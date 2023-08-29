@@ -18,9 +18,15 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from "@ioc:Adonis/Core/Route";
 
-Route.post('/register', 'AuthController.register')
-Route.post('/login', 'AuthController.login')
-Route.resource('/tasks', 'TasksController').apiOnly()
-Route.resource('/users', 'UsersController').apiOnly()
+Route.post("/register", "AuthController.register");
+Route.post("/login", "AuthController.login");
+Route.resource("/tasks", "TasksController").apiOnly();
+Route.resource("/users", "UsersController").apiOnly();
+
+// example route protected
+Route.get("/protected", async ({ auth }) => {
+  await auth.use("api").authenticate();
+  return "Hola";
+});
