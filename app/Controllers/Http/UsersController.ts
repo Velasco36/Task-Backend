@@ -5,7 +5,21 @@ import User from "App/Models/User";
 export default class UsersController {
   public async index({ response }: HttpContextContract) {
     try {
-      return User.query().preload("tasks");
+      const data = await User.query().preload("tasks");
+      const payload = data.map((info) => ({
+        user: info.$original,
+        tasks: info.$preloaded.tasks
+      }))
+      const user = payload.map((data) => (
+       { 
+        id: data.user.id,
+        nickName: data.user.nick_name,
+        email:  data.user.email,
+        task: data.tasks
+       }            
+      ))
+      return response.status(200).json(user)
+
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
