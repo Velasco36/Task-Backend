@@ -19,7 +19,6 @@ export default class UsersController {
        }            
       ))
       return response.status(200).json(user)
-
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
