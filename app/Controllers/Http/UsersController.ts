@@ -11,12 +11,12 @@ export default class UsersController {
         tasks: info.$preloaded.tasks
       }))
       const user = payload.map((data) => (
-       { 
+       {
         id: data.user.id,
         nickName: data.user.nick_name,
         email:  data.user.email,
         task: data.tasks
-       }            
+       }
       ))
       return response.status(200).json(user)
     } catch (error) {
@@ -42,7 +42,12 @@ export default class UsersController {
 
   public async show({ params, response }: HttpContextContract) {
     try {
-      return User.findOrFail(params.id);
+      const user = await User.query()
+        .where('id', params.id)
+        .preload('tasks')
+        .firstOrFail();
+
+      return user;
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
