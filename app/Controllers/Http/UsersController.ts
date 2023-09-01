@@ -39,15 +39,24 @@ export default class UsersController {
       return response.status(404).json({ message: "An error has occurred" });
     }
   }
-
   public async show({ params, response }: HttpContextContract) {
     try {
       const user = await User.query()
         .where('id', params.id)
         .preload('tasks')
-        .firstOrFail();
+        // .firstOrFail();
 
-      return user;
+        const responseData = user.map((info)=> ({
+
+          id: info.id,
+          nick_name:info.nick_name,
+          email: info.email,
+          tasks: info.$preloaded.tasks
+
+
+        }))
+
+      return response.status(200).json(responseData);
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
