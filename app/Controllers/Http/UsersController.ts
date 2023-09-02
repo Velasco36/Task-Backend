@@ -3,7 +3,7 @@ import { schema } from "@ioc:Adonis/Core/Validator";
 import User from "App/Models/User";
 
 export default class UsersController {
-  public async index({ response }: HttpContextContract) {
+  public async index({ auth, response }: HttpContextContract) {
     try {
       const data = await User.query().preload("tasks");
       const payload = data.map((info) => ({
@@ -18,6 +18,7 @@ export default class UsersController {
         task: data.tasks
        }
       ))
+      await auth.use("api").authenticate()
       return response.status(200).json(user)
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
@@ -30,7 +31,7 @@ export default class UsersController {
         nick_name: schema.string({ trim: true }),
         email: schema.string({ trim: true }),
         password: schema.string({ trim: true }),
-      });
+      });      
       const payload = await request.validate({ schema: newUserSchema });
       const user = await User.create(payload);
       response.status(201);
@@ -39,7 +40,7 @@ export default class UsersController {
       return response.status(404).json({ message: "An error has occurred" });
     }
   }
-  public async show({ params, response }: HttpContextContract) {
+  public async show({ auth, params, response }: HttpContextContract) {
     try {
       const user = await User.query()
         .where('id', params.id)
@@ -47,22 +48,19 @@ export default class UsersController {
         // .firstOrFail();
 
         const responseData = user.map((info)=> ({
-
           id: info.id,
           nick_name:info.nick_name,
           email: info.email,
           tasks: info.$preloaded.tasks
-
-
         }))
-
+      await auth.use("api").authenticate()
       return response.status(200).json(responseData);
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
   }
 
-  public async update({ params, request, response }: HttpContextContract) {
+  public async update({ auth, params, request, response }: HttpContextContract) {
     try {
       const body = request.body();
       const user = await User.findOrFail(params.id);
@@ -75,6 +73,7 @@ export default class UsersController {
       if (body.password) {
         user.password = body.password;
       }
+      await auth.use("api").authenticate()
       await user.save();
       response.status(200).json({ message: "User Updated Successfully", user });
     } catch (error) {
