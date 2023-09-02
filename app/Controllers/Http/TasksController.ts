@@ -11,7 +11,7 @@ export default class TasksController {
         }
     }
 
-    public async store({ request, response }: HttpContextContract){
+    public async store({ auth, request, response }: HttpContextContract){
         try {
             const newTaskShema = schema.create({
                 userId: schema.string({ trim: true }),
@@ -19,6 +19,7 @@ export default class TasksController {
                 color: schema.string({ trim: true }),
                 limitAt: schema.date()
             });
+            await auth.use("api").authenticate()
             const payload = await request.validate({ schema: newTaskShema })
             const task = await Task.create(payload)
             response.status(201)
@@ -36,7 +37,7 @@ export default class TasksController {
         }
     }
 
-    public async update({ params, request, response }: HttpContextContract){
+    public async update({ auth, params, request, response }: HttpContextContract){
         try {
             const body = request.body();
             const task = await Task.findOrFail(params.id)
@@ -52,6 +53,7 @@ export default class TasksController {
             if(body.limitAt){
                 task.limitAt = body.limitAt;
             }
+            await auth.use("api").authenticate()
             return task.save()
         } catch (error) {
             return response.status(404).json({ message: 'An error has occurred' })
