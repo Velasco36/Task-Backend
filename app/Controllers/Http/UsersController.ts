@@ -34,8 +34,7 @@ export default class UsersController {
       });      
       const payload = await request.validate({ schema: newUserSchema });
       const user = await User.create(payload);
-      response.status(201);
-      return user;
+      return response.status(200).json(user);      
     } catch (error) {
       return response.status(404).json({ message: "An error has occurred" });
     }
