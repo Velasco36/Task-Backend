@@ -5,7 +5,7 @@ import Task from '../../Models/Task';
 export default class TasksController {
     public async index({ response }){
         try {
-            return Task.all()            
+            return Task.all()
         } catch (error) {
             return response.status(404).json({ message: 'An error has occurred' })
         }
@@ -16,9 +16,11 @@ export default class TasksController {
             const newTaskShema = schema.create({
                 userId: schema.string({ trim: true }),
                 name: schema.string({ trim: true }),
+                description: schema.string({ trim: true }),
                 color: schema.string({ trim: true }),
                 limitAt: schema.date()
             });
+
             await auth.use("api").authenticate()
             const payload = await request.validate({ schema: newTaskShema })
             const task = await Task.create(payload)
@@ -31,7 +33,7 @@ export default class TasksController {
 
     public async show({ params, response }: HttpContextContract){
         try {
-            return Task.findOrFail(params.id)           
+            return Task.findOrFail(params.id)
         } catch (error) {
             return response.status(404).json({ message: 'An error has occurred' })
         }
@@ -43,6 +45,9 @@ export default class TasksController {
             const task = await Task.findOrFail(params.id)
             if(body.name){
                 task.name = body.name;
+            };
+            if(body.description){
+                task.description = body.description;
             };
             if(body.state){
                 task.state = body.state;
@@ -66,7 +71,7 @@ export default class TasksController {
             await task.delete();
             response.status(200).json({ message: 'Task deleted successfully', task })
         } catch (error) {
-            return response.status(404).json({ message: 'An error has occurred' })            
+            return response.status(404).json({ message: 'An error has occurred' })
         }
     }
 }
