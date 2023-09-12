@@ -13,6 +13,9 @@ export default class Task extends BaseModel {
   public name: string
 
   @column()
+  public description: string | null
+
+  @column()
   public state: string
 
   @column()
