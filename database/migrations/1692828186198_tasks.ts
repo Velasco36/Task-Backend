@@ -10,6 +10,7 @@ export default class extends BaseSchema {
 
       table.integer("user_id").references("id").inTable("users");
       table.string("name");
+      table.string("description").defaultTo(null);
       table
         .enum("state", Object.values(TaskState))
         .defaultTo(TaskState.PENDING)
