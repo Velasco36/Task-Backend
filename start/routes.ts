@@ -20,12 +20,24 @@
 
 import Route from "@ioc:Adonis/Core/Route";
 
-Route.post("/login", "AuthController.login");
-Route.resource("/tasks", "TasksController").apiOnly();
-Route.resource("/users", "UsersController").apiOnly();
+import TasksController from "../app/Controllers/Http/TasksController";
+import UsersController from "../app/Controllers/Http/UsersController";
 
-// example route protected
-Route.get("/protected", async ({ auth }) => {
-  await auth.use("api").authenticate();
-  return "Hola";
+Route.post("/login", "AuthController.login");
+
+// Route.resource("/tasks", "TasksController").apiOnly();
+
+Route.get("/tasks", async ({ auth, response }) => {
+  const task = new TasksController({ response });
+  await task.init({ auth });
+  return task.index();
+});
+
+// Route.resource("/users", "UsersController").apiOnly();
+// Route.get("/user", "UsersController.show");
+
+Route.get("/user", async ({ auth, response }) => {
+  const user = new UsersController({ response });
+  await user.init({ auth });
+  return user.show();
 });
