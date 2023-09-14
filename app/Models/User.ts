@@ -10,7 +10,7 @@ import Hash from "@ioc:Adonis/Core/Hash";
 import Task from "./Task";
 
 export default class User extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: null })
   public id: number;
 
   @column()
@@ -19,7 +19,7 @@ export default class User extends BaseModel {
   @column()
   public nick_name: string;
 
-  @column()
+  @column({ serializeAs: null })
   public password: string;
 
   @column()
