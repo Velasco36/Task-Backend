@@ -13,8 +13,14 @@ export const postUser = async (response, request) => {
     return user.store();
 }
 
-export const putUser = async (auth, params, response, request) => {
+export const putUser = async (auth, response, request) => {
     const user = new UsersController({ response, request });
-    await user.putTask({ auth, params, request });
+    await user.putUser({ auth, request });
     return user.update();
+}
+
+export const deleteUser = async (auth, response) => {
+    const user = new UsersController({ response });
+    await user.deleteUser({ auth });
+    return user.destroy();
 }
