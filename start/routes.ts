@@ -19,25 +19,40 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
-
-import TasksController from "../app/Controllers/Http/TasksController";
-import UsersController from "../app/Controllers/Http/UsersController";
+import { getUser, postUser, putUser } from "../helpers/helperRoutes/HelperRouteUser";
+import { getTasks, postTask, putTask, deleteTask } from "../helpers/helperRoutes/HelperRouteTask";
 
 Route.post("/login", "AuthController.login");
 
 // Route.resource("/tasks", "TasksController").apiOnly();
 
 Route.get("/tasks", async ({ auth, response }) => {
-  const task = new TasksController({ response });
-  await task.init({ auth });
-  return task.index();
+  await getTasks(auth, response)  
+});
+
+Route.post("/tasks", async ({ auth, response, request }) => {
+  await postTask(auth, response, request)
+});
+
+Route.put("/tasks/:id", async ({ auth, params, response, request }) => {
+  await putTask(auth, params, response, request)
+});
+
+Route.delete("/tasks/:id", async ({ auth, params, response}) => {
+  await deleteTask(auth, params, response)
 });
 
 // Route.resource("/users", "UsersController").apiOnly();
 // Route.get("/user", "UsersController.show");
 
 Route.get("/user", async ({ auth, response }) => {
-  const user = new UsersController({ response });
-  await user.init({ auth });
-  return user.show();
+  await getUser(auth, response)
+});
+
+Route.post("/user", async ({response, request }) => {
+  await postUser(response, request)
+});
+
+Route.put("/user/:id", async ({auth, params, response, request }) => {
+  await putUser(auth, params, response, request)
 });
