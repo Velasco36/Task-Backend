@@ -1,6 +1,5 @@
 // import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { BaseController } from "./BaseController";
-import User from "App/Models/User";
 
 export default class UsersController extends BaseController {
   public async index() {
@@ -31,20 +30,18 @@ export default class UsersController extends BaseController {
   public async update() {
     try {
       this.putUser
-      return this.sendResponse(this.putUser);
+      return this.sendResponse(this.user);
     } catch (error) {
       return this.sendError(error);
     }
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
+  public async destroy() {
     try {
-      const user = await User.findOrFail(params.id);
-      await user.delete();
-      response.status(200).json({ message: "User Deleted Successfully", user });
+      this.deleteUser
+      return this.sendResponse(this.user);
     } catch (error) {
-      console.log({ error: error });
-      return response.status(404).json({ message: "An error has occurred" });
+      return this.sendError(error);
     }
   }
 }
