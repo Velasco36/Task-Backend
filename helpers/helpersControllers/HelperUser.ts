@@ -11,11 +11,12 @@ export const createNewUser = async (request) => {
       }
 }
 
-export const updateUser = async (auth, request, params) => {
+export const updateUser = async (auth, request) => {
     try {
-        await auth.use("api").authenticate();
+        const data = await auth.use("api").authenticate();
         const body = request.body();
-        const user = await User.findOrFail(params.id);
+        const id = data.$original.id;
+        const user = await User.findOrFail(id);
         if (body.nick_name) {
             user.nick_name = body.nick_name;
         }
@@ -30,4 +31,16 @@ export const updateUser = async (auth, request, params) => {
       } catch (error) {
         console.log(error)
       }
+}
+
+export const destroyUser = async (auth) => {
+    try {
+        const data = await auth.use("api").authenticate();
+        const id = data.$original.id
+        const user = await User.findOrFail(id);
+        await user.delete();
+        return user
+    } catch (error) {
+        console.log(error)
+    }
 }
