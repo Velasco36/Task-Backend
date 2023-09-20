@@ -6,7 +6,7 @@ export default class Task extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column()
+  @column({ serializeAs: null })
   public userId: string
 
   @column()
