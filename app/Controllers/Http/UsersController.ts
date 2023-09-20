@@ -1,41 +1,23 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { schema } from "@ioc:Adonis/Core/Validator";
+// import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { BaseController } from "./BaseController";
 import User from "App/Models/User";
 
 export default class UsersController extends BaseController {
-  public async index({ auth, response }: HttpContextContract) {
-    try {
-      const data = await User.query().preload("tasks");
-      const payload = data.map((info) => ({
-        user: info.$original,
-        tasks: info.$preloaded.tasks,
-      }));
-      const user = payload.map((data) => ({
-        id: data.user.id,
-        nickName: data.user.nick_name,
-        email: data.user.email,
-        task: data.tasks,
-      }));
-      await auth.use("api").authenticate();
-      return response.status(200).json(user);
+  public async index() {
+    try {      
+      const user = this.auth();
+      return this.sendResponse(user);
     } catch (error) {
-      return response.status(404).json({ message: "An error has occurred" });
+      return this.sendError(error);
     }
   }
 
-  public async store({ response, request }: HttpContextContract) {
+  public async store() {
     try {
-      const newUserSchema = schema.create({
-        nick_name: schema.string({ trim: true }),
-        email: schema.string({ trim: true }),
-        password: schema.string({ trim: true }),
-      });
-      const payload = await request.validate({ schema: newUserSchema });
-      const user = await User.create(payload);
-      return response.status(200).json(user);
+      this.postUser
+      return this.sendResponse(this.user);
     } catch (error) {
-      return response.status(404).json({ message: "An error has occurred" });
+      return this.sendError(error);
     }
   }
   public async show() {
@@ -46,29 +28,12 @@ export default class UsersController extends BaseController {
     }
   }
 
-  public async update({
-    auth,
-    params,
-    request,
-    response,
-  }: HttpContextContract) {
+  public async update() {
     try {
-      const body = request.body();
-      const user = await User.findOrFail(params.id);
-      if (body.nick_name) {
-        user.nick_name = body.nick_name;
-      }
-      if (body.email) {
-        user.email = body.email;
-      }
-      if (body.password) {
-        user.password = body.password;
-      }
-      await auth.use("api").authenticate();
-      await user.save();
-      response.status(200).json({ message: "User Updated Successfully", user });
+      this.putUser
+      return this.sendResponse(this.putUser);
     } catch (error) {
-      return response.status(404).json({ message: "An error has occurred" });
+      return this.sendError(error);
     }
   }
 
