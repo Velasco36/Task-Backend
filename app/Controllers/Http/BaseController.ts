@@ -3,7 +3,7 @@ import { RequestContract } from "@ioc:Adonis/Core/Request";
 import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import User from "App/Models/User";
 import { createNewTask, destroyTask, updateTask } from "../../../helpers/helpersControllers/HelperTask"
-import { createNewUser, updateUser } from "../../../helpers/helpersControllers/HelperUser"
+import { createNewUser, updateUser, destroyUser } from '../../../helpers/helpersControllers/HelperUser';
 
 export class BaseController {
   protected auth: AuthContract | User | any;
@@ -30,16 +30,12 @@ export class BaseController {
     this.user = await createNewUser(request)
   }
 
-  protected async putUser(
-    { auth, 
-      request,
-      params 
-    }: { 
-      auth: AuthContract, 
-      request: RequestContract,
-      params: Record<string, any>}
-  ){
-    this.task = await updateUser(auth, request, params)
+  protected async putUser({ auth, request }: { auth: AuthContract, request: RequestContract,}){
+    this.user = await updateUser(auth, request)
+  }
+
+  protected async deleteUser({ auth }: { auth: AuthContract }){
+    this.user = await destroyUser(auth)
   }
 
   protected async postTask({ auth, request }: { auth: AuthContract, request: RequestContract }){
