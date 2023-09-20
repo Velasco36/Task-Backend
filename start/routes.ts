@@ -19,12 +19,19 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
-import { getUser, postUser, putUser } from "../helpers/helperRoutes/HelperRouteUser";
+import { getUser, postUser, putUser, deleteUser } from "../helpers/helperRoutes/HelperRouteUser";
 import { getTasks, postTask, putTask, deleteTask } from "../helpers/helperRoutes/HelperRouteTask";
+
+
+//Ruta del Login
 
 Route.post("/login", "AuthController.login");
 
 // Route.resource("/tasks", "TasksController").apiOnly();
+// Route.resource("/users", "UsersController").apiOnly();
+// Route.get("/user", "UsersController.show");
+
+//Rutas de las tareas
 
 Route.get("/tasks", async ({ auth, response }) => {
   await getTasks(auth, response)  
@@ -42,8 +49,7 @@ Route.delete("/tasks/:id", async ({ auth, params, response}) => {
   await deleteTask(auth, params, response)
 });
 
-// Route.resource("/users", "UsersController").apiOnly();
-// Route.get("/user", "UsersController.show");
+//Rutas de usuario
 
 Route.get("/user", async ({ auth, response }) => {
   await getUser(auth, response)
@@ -53,6 +59,10 @@ Route.post("/user", async ({response, request }) => {
   await postUser(response, request)
 });
 
-Route.put("/user/:id", async ({auth, params, response, request }) => {
-  await putUser(auth, params, response, request)
+Route.put("/user", async ({auth, response, request }) => {
+  await putUser(auth, response, request)
+});
+
+Route.delete("/user", async ({ auth, response }) => {
+  await deleteUser(auth, response)
 });
