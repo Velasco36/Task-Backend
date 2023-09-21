@@ -6,7 +6,7 @@ export default class Task extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column()
+  @column({ serializeAs: null })
   public userId: string
 
   @column()
@@ -19,10 +19,10 @@ export default class Task extends BaseModel {
   public state: string
 
   @column()
-  public color: string
+  public color: string | null
 
   @column()
-  public limitAt: DateTime
+  public limitAt: DateTime | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
