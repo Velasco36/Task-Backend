@@ -25,8 +25,9 @@ export default class TaskValidator {
    */
   public static newTaskShema = schema.create({
     name: schema.string({ trim: true }),
-    color: schema.string({ trim: true }),
-    limitAt: schema.date(),
+    description: schema.string.optional({ trim: true }),
+    color: schema.string.optional({ trim: true }),
+    limitAt: schema.date.optional(),
   });
   
         
