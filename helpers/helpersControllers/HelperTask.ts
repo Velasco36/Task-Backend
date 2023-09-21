@@ -27,6 +27,9 @@ export const updateTask = async (auth, request, params) => {
       if (body.name) {
         task.name = body.name;
       }
+      if (body.description) {
+        task.description = body.description;
+      }
       if (body.state) {
         task.state = body.state;
       }
