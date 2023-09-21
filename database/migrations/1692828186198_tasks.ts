@@ -15,8 +15,8 @@ export default class extends BaseSchema {
         .enum("state", Object.values(TaskState))
         .defaultTo(TaskState.PENDING)
         .notNullable();
-      table.string("color");
-      table.timestamp("limit_at").nullable();
+      table.string("color").defaultTo(null);
+      table.timestamp("limit_at").nullable().defaultTo(null);
 
       table.timestamp("created_at", { useTz: true });
       table.timestamp("updated_at", { useTz: true });
