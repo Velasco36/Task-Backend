@@ -26,11 +26,12 @@ export default class TaskValidator {
   public static newTaskShema = schema.create({
     name: schema.string({ trim: true }),
     description: schema.string.optional({ trim: true }),
+    state: schema.string.optional({ trim: true }),
     color: schema.string.optional({ trim: true }),
     limitAt: schema.date.optional(),
   });
-  
-        
+
+
    /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
    * for targeting nested fields and array expressions `(*)` for targeting all
