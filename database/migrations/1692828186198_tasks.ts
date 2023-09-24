@@ -13,7 +13,7 @@ export default class extends BaseSchema {
       table.string("description").defaultTo(null);
       table
         .enum("state", Object.values(TaskState))
-        .defaultTo(TaskState.PENDING)
+        
         .notNullable();
       table.string("color").defaultTo(null);
       table.timestamp("limit_at").nullable().defaultTo(null);
