@@ -34,7 +34,11 @@ Route.post("/login", "AuthController.login");
 //Rutas de las tareas
 
 Route.get("/tasks", async ({ auth, response }) => {
-  await getTasks(auth, response)  
+  await getTasks(auth, response)
+});
+
+Route.get("/tasks/:id", async ({ auth, params, response, request }) => {
+  await putTask(auth, params, response, request)
 });
 
 Route.post("/tasks", async ({ auth, response, request }) => {
