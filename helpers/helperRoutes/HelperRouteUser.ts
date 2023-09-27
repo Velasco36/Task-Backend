@@ -1,8 +1,8 @@
 import UsersController from "../../app/Controllers/Http/UsersController";
 
 //Helpers para la rutas de "user"
-export const getUser = async (auth, response) => {
-    const user = new UsersController({ response });
+export const getUser = async (auth, request, response) => {
+    const user = new UsersController({ request, response });
     await user.init({ auth });
     return user.show();
 }
@@ -19,8 +19,8 @@ export const putUser = async (auth, response, request) => {
     return user.update();
 }
 
-export const deleteUser = async (auth, response) => {
-    const user = new UsersController({ response });
+export const deleteUser = async (auth, request, response) => {
+    const user = new UsersController({ request, response });
     await user.deleteUser({ auth });
     return user.destroy();
 }

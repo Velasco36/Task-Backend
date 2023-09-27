@@ -33,8 +33,8 @@ Route.post("/login", "AuthController.login");
 
 //Rutas de las tareas
 
-Route.get("/tasks", async ({ auth, response }) => {
-  await getTasks(auth, response)  
+Route.get("/tasks", async ({ auth, request, response }) => {
+  await getTasks(auth, request, response)  
 });
 
 Route.post("/tasks", async ({ auth, response, request }) => {
@@ -45,14 +45,14 @@ Route.put("/tasks/:id", async ({ auth, params, response, request }) => {
   await putTask(auth, params, response, request)
 });
 
-Route.delete("/tasks/:id", async ({ auth, params, response}) => {
-  await deleteTask(auth, params, response)
+Route.delete("/tasks/:id", async ({ auth, params, request, response}) => {
+  await deleteTask(auth, params, request, response)
 });
 
 //Rutas de usuario
 
-Route.get("/user", async ({ auth, response }) => {
-  await getUser(auth, response)
+Route.get("/user", async ({ auth, request, response }) => {
+  await getUser(auth, request, response)
 });
 
 Route.post("/user", async ({response, request }) => {
@@ -63,6 +63,6 @@ Route.put("/user", async ({auth, response, request }) => {
   await putUser(auth, response, request)
 });
 
-Route.delete("/user", async ({ auth, response }) => {
-  await deleteUser(auth, response)
+Route.delete("/user", async ({ auth, request, response }) => {
+  await deleteUser(auth, request, response)
 });
