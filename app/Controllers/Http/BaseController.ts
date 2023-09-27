@@ -18,7 +18,7 @@ export class BaseController {
     this.request = request;
   }
   
-  protected async init({ auth }: { auth: AuthContract }) {
+  public async init({ auth }: { auth: AuthContract }) {
     try {
       this.auth = await auth.use("api").authenticate();
     } catch (error) {
@@ -26,23 +26,23 @@ export class BaseController {
     }
   }
 
-  protected async postUser({request }: { request: RequestContract }){
+  public async postUser({request }: { request: RequestContract }){
     this.user = await createNewUser(request)
   }
 
-  protected async putUser({ auth, request }: { auth: AuthContract, request: RequestContract,}){
+  public async putUser({ auth, request }: { auth: AuthContract, request: RequestContract,}){
     this.user = await updateUser(auth, request)
   }
 
-  protected async deleteUser({ auth }: { auth: AuthContract }){
+  public async deleteUser({ auth }: { auth: AuthContract }){
     this.user = await destroyUser(auth)
   }
 
-  protected async postTask({ auth, request }: { auth: AuthContract, request: RequestContract }){
+  public async postTask({ auth, request }: { auth: AuthContract, request: RequestContract }){
     this.task = await createNewTask(auth, request)
   }
 
-  protected async putTask(
+  public async putTask(
     { auth, 
       request,
       params 
@@ -54,7 +54,7 @@ export class BaseController {
     this.task = await updateTask(auth, request, params)
   }
 
-  protected async deleteTask({ auth, params}: {auth: AuthContract, params: Record<string, any>}){
+  public async deleteTask({ auth, params}: {auth: AuthContract, params: Record<string, any>}){
     this.task = await destroyTask(auth, params)
   }
 
