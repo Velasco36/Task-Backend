@@ -23,13 +23,10 @@ export const updateUser = async (auth, request) => {
         if (body.email) {
             user.email = body.email;
         }
-        if (body.password) {
-            user.password = body.password;
-        }
         await user.save();
-        return user
+        return user;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
 }
 
