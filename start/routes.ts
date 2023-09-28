@@ -21,11 +21,18 @@
 import Route from "@ioc:Adonis/Core/Route";
 import { getUser, postUser, putUser, deleteUser } from "../helpers/helperRoutes/HelperRouteUser";
 import { getTasks, postTask, putTask, deleteTask } from "../helpers/helperRoutes/HelperRouteTask";
+import { login, newPassword } from "../helpers/helperRoutes/HelperRouteAuth";
 
 
 //Ruta del Login
 
-Route.post("/login", "AuthController.login");
+Route.post("/login", async ({ auth, response, request }) => {
+  await login(auth, response, request)
+});
+
+Route.put("/changepassword", async ({ auth, request, response }) => {
+  await newPassword(auth, request, response)
+});
 
 // Route.resource("/tasks", "TasksController").apiOnly();
 // Route.resource("/users", "UsersController").apiOnly();
