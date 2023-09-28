@@ -4,6 +4,7 @@ import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import User from "App/Models/User";
 import { createNewTask, destroyTask, updateTask } from "../../../helpers/helpersControllers/HelperTask"
 import { createNewUser, updateUser, destroyUser } from '../../../helpers/helpersControllers/HelperUser';
+import { isLogin, newPasswordUser } from "../../../helpers/helpersControllers/HelperAuth";
 
 export class BaseController {
   protected auth: AuthContract | User | any;
@@ -26,11 +27,20 @@ export class BaseController {
     }
   }
 
+  public async login({ auth, request }: { auth: AuthContract, request: RequestContract}){
+    console.log(request)
+    this.user = await isLogin(auth, request)
+  }
+
+  public async changePasswordUser({ auth, request}: { auth: AuthContract, request: RequestContract}){
+    this.user = await newPasswordUser(auth, request)
+  }
+
   public async postUser({request }: { request: RequestContract }){
     this.user = await createNewUser(request)
   }
 
-  public async putUser({ auth, request }: { auth: AuthContract, request: RequestContract,}){
+  public async putUser({ auth, request }: { auth: AuthContract, request: RequestContract }){
     this.user = await updateUser(auth, request)
   }
 
