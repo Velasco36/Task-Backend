@@ -1,10 +1,18 @@
 import UserValidator from "../../app/Validators/UserValidator";
 import User from "App/Models/User"
+import Mail from '@ioc:Adonis/Addons/Mail'
 
 export const createNewUser = async (request) => {
     try {
         const payload = await request.validate({ schema: UserValidator.newUserSchema });
         const user = await User.create(payload);
+        Mail.send((message) => {
+            message
+              .from('verify@adonisgram.com')
+              .to(user.email)
+              .subject('Welcome Onboard!')
+              .htmlView(`<h1>bienvenido ${user.nick_name} <h1>`)
+          })
         return user
       } catch (error) {
         console.log(error)
