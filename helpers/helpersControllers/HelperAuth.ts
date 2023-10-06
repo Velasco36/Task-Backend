@@ -11,14 +11,14 @@ export const isLogin = async (auth, request) => {
       if (!(await Hash.verify(user.password, password))) {
         return "Invalid credentials";
       }
-  
+
       return await auth.use("api").generate(user);
     } else {
       const user = await User.findByOrFail("email", email);
       if (!(await Hash.verify(user.password, password))) {
         return "Invalid credentials";
       }
-  
+
       return await auth.use("api").generate(user);
     }
 }
@@ -26,6 +26,7 @@ export const isLogin = async (auth, request) => {
 export const newPasswordUser = async (auth, request) => {
     try {
         const { oldpassword, newpassword } = request.body();
+        console.log(oldpassword, newpassword)
         const user = await auth.use("api").authenticate();
         if(!(await Hash.verify(user.password, oldpassword))) {
             return "Invalid credentials";
